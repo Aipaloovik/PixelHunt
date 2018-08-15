@@ -80,7 +80,7 @@ public class Main {
 	public static String pokemon2 = "", nature2 = "", nature2b = "", nature2c = "";
 	public static String pokemon3 = "", nature3 = "", nature3b = "", nature3c = "";
 	public static String pokemon4 = "", nature4 = "", nature4b = "", nature4c = "";
-	public static List<Entity> pixelmonList = new ArrayList<Entity>();
+	public static Set<UUID> pixelmonList = new HashSet<>();
 	public static LocalDateTime pokemon1expiry, pokemon2expiry, pokemon3expiry, pokemon4expiry;
 	public static String pokemon1ballName, pokemon2ballName, pokemon3ballName, pokemon4ballName;
 	public static ItemStack pokemon1ballReward, pokemon2ballReward, pokemon3ballReward, pokemon4ballReward;
@@ -175,12 +175,12 @@ public class Main {
 
 	@Listener
 	public void onPixelmonMove(MoveEntityEvent event, @First Entity entity) {
-		if (pixelmonList.contains(entity)) {
+		if (pixelmonList.contains(entity.getUniqueId())) {
 			EntityPixelmon pixelmon = (EntityPixelmon) entity;
 			if (pixelmon.isEntityAlive() && !pixelmon.isInBall && !pixelmon.hasOwner()) {
 				entity.getWorld().spawnParticles(ParticleEffect.builder().type(ParticleTypes.MOBSPAWNER_FLAMES).build(), entity.getLocation().getPosition(), 3);
 			} else {
-				pixelmonList.remove(entity);
+				pixelmonList.remove(entity.getUniqueId());
 				event.setCancelled(false);
 			}
 		}
